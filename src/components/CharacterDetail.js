@@ -2,8 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
+import Loader from "./Loader";
 
 export default function CharacterDetail() {
   const { id } = useParams();
@@ -31,6 +30,8 @@ export default function CharacterDetail() {
 
     setLoadingSummary(true);
     setSummary("");
+
+    const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
     try {
       const genAI = new GoogleGenerativeAI(API_KEY);
@@ -62,38 +63,44 @@ export default function CharacterDetail() {
 
   return (
     <div className="character-detail">
-      <img
-        className="character-detail-img"
-        src={character.image}
-        alt={character.name}
-      />
-      <div>
-        <h3 className="character-detail-name">{character.name}</h3>
-        <ul>
-          <li>
-            <p>Status: {character.status}</p>
-          </li>
-          <li>
-            {" "}
-            <p>Species: {character.species}</p>
-          </li>
-          <li>
-            {" "}
-            <p>Gender: {character.gender}</p>
-          </li>
-          <li>
-            {" "}
-            <p>Origin: {character.origin.name}</p>
-          </li>
-          <li>
-            {" "}
-            <p>Location: {character.location.name}</p>
-          </li>
-        </ul>
+      <div className="character-detail-info-container">
+        <img
+          className="character-detail-img"
+          src={character.image}
+          alt={character.name}
+        />
+        <div className="character-detail-info">
+          <h3 className="character-detail-name">{character.name}</h3>
+          <ul className="text-detail">
+            <li>
+              <p>Status: {character.status}</p>
+            </li>
+            <li>
+              <p>Species: {character.species}</p>
+            </li>
+            <li>
+              <p>Gender: {character.gender}</p>
+            </li>
+            <li>
+              <p>Origin: {character.origin.name}</p>
+            </li>
+            <li>
+              <p>Location: {character.location.name}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-        <button onClick={handleGenerateSummary} disabled={loadingSummary}>
-          {loadingSummary ? "Generando..." : "🧠 Generar resumen con IA"}
+      <div className="extra-info-detail">
+        <button
+          className="genRes-btn"
+          onClick={handleGenerateSummary}
+          disabled={loadingSummary}
+        >
+          🧠 Generar resumen con IA
         </button>
+
+        {loadingSummary && <Loader />}
 
         {summary && (
           <div className="ia-summary">

@@ -12,6 +12,8 @@ export default function CharacterDetail() {
   const [loadingSummary, setLoadingSummary] = useState(false);
 
   useEffect(() => {
+    setSummary("");
+    setLoadingSummary(false);
     axios
       .get(`https://rickandmortyapi.com/api/character/${id}`)
       .then((res) => {
@@ -39,7 +41,7 @@ export default function CharacterDetail() {
         model: "gemini-2.5-flash",
       });
 
-      const prompt = `Based on the following JSON data for a character, write a summary of eight lines or less, describing the character in a creative way that speaks to a science fiction fan, especially Rick and Morty. The summary also emphasizes why the character might be interesting to the user, associating them with everyday activities. Avoid phrases like "Here's a summary..."; simply describe the character directly. Include emojis when necessary.":\n\n${JSON.stringify(
+      const prompt = `Con base en los siguientes datos JSON de un personaje, escribe un resumen de ocho líneas o menos que lo describa de forma creativa y atractiva para los fans de la ciencia ficción, especialmente de Rick y Morty. El resumen también enfatiza por qué el personaje podría ser interesante para el usuario, asociándolo con actividades cotidianas. Evita frases como "Aquí tienes un resumen..."; simplemente describe al personaje directamente. Incluye emojis cuando sea necesario.":\n\n${JSON.stringify(
         character,
         null,
         2
